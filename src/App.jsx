@@ -1,26 +1,34 @@
-import { LoadingButton } from '@mui/lab';
-import { Box, Container, TextField, Typography, CssBaseline } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
-import axios from 'axios';
-import WeatherCard from './components/WeatherCard';
-import { darkTheme } from './theme';
-import './index.css';  
-const API_WEATHER = `http://api.weatherapi.com/v1/current.json?key=${import.meta.env.VITE_API_KEY}&lang=es&q=`;
+import { LoadingButton } from "@mui/lab";
+import {
+  Box,
+  Container,
+  TextField,
+  Typography,
+  CssBaseline,
+} from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { useState } from "react";
+import axios from "axios";
+import WeatherCard from "./components/WeatherCard";
+import { darkTheme } from "./theme";
+import "./index.css";
+const API_WEATHER = `http://api.weatherapi.com/v1/current.json?key=${
+  import.meta.env.VITE_API_KEY
+}&lang=es&q=`;
 
 export default function App() {
-  const [city, setCity] = useState('');
-  const [error, setError] = useState({ error: false, message: '' });
+  const [city, setCity] = useState("");
+  const [error, setError] = useState({ error: false, message: "" });
   const [loading, setLoading] = useState(false);
   const [weather, setWeather] = useState(null);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setError({ error: false, message: '' });
+    setError({ error: false, message: "" });
     setLoading(true);
 
     try {
-      if (!city.trim()) throw { message: 'El campo ciudad es obligatorio' };
+      if (!city.trim()) throw { message: "El campo ciudad es obligatorio" };
 
       const res = await fetch(API_WEATHER + city);
       const data = await res.json();
@@ -39,9 +47,11 @@ export default function App() {
 
       setWeather(weatherData);
 
-      
-      const response = await axios.post('http://localhost:5001/api/weather', weatherData);
-      console.log('Response from server:', response.data);
+      const response = await axios.post(
+        "http://localhost:5001/api/weather",
+        weatherData
+      );
+      console.log("Response from server:", response.data);
     } catch (error) {
       setError({ error: true, message: error.message });
     } finally {
@@ -57,7 +67,7 @@ export default function App() {
           App Clima
         </Typography>
         <Box
-          sx={{ display: 'grid', gap: 2 }}
+          sx={{ display: "grid", gap: 2 }}
           component="form"
           autoComplete="off"
           onSubmit={onSubmit}
@@ -86,7 +96,7 @@ export default function App() {
         </Box>
         {weather && <WeatherCard weather={weather} />}
         <Typography className="footer">
-          Powered by:{' '}
+          Powered by:{" "}
           <a href="https://www.weatherapi.com/" title="Weather API">
             WeatherAPI.com
           </a>
